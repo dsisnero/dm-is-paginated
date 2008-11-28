@@ -9,9 +9,10 @@ module DataMapper
         def paginated(options = {})
           page     = options.delete(:page) || 1
           per_page = options.delete(:per_page) || 5
-    
+          sort_order = key.map{ |k| ::DataMapper::Query::Direction.new(k,:asc)}
+          
           options.reverse_merge!({
-            :order => [:id.desc]
+            :order => sort_order
           })
           
           page_count = (count(options).to_f / per_page).ceil
